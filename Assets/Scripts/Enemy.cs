@@ -20,10 +20,21 @@ public class Enemy : MonoBehaviour
     [SerializeField] Transform[] cannonL;
     [SerializeField] float viewDistance;
 
+    [SerializeField]int hpMax;
+    int hp;
+
+    Animator anim;
+
+
     void Start()
     {
+        hp = hpMax;
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponent<Animator>();
+        anim.SetInteger("Hp", hp);
+
+        reload = reloadTime;
 
         if (enemyType == 1)
         {
@@ -35,42 +46,45 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(enemyType == 1)
+        if(hp > 0 && player != null)
         {
-            Movement();
-        }
-        else
-        {
-            if(Vector2.Distance(transform.position, player.transform.position) < viewDistance)
+            if (enemyType == 1)
             {
                 Movement();
             }
             else
             {
-                rb.velocity = -transform.up * moveSpeed;
+                if (Vector2.Distance(transform.position, player.transform.position) < viewDistance)
+                {
+                    Movement();
+                }
+                else
+                {
+                    rb.velocity = -transform.up * moveSpeed;
+                }
             }
-        }
-        
 
-        if (enemyType == 2 && Vector2.Distance(transform.position, player.transform.position) < viewDistance)
-        {
-            if (reload >= reloadTime) Shoot();
-        }
 
-        if (reload < reloadTime)
-        {
-            reload += Time.deltaTime;
-        }
-
-        if (enemyType == 1)
-        {
-            if(Vector2.Distance(transform.position, player.transform.position) < viewDistance)
+            if (enemyType == 2 && Vector2.Distance(transform.position, player.transform.position) < viewDistance)
             {
-                rotationSpeed = lowRotation;
+                if (reload >= reloadTime) Shoot();
             }
-            else
+
+            if (reload < reloadTime)
             {
-                rotationSpeed = totalRotation;
+                reload += Time.deltaTime;
+            }
+
+            if (enemyType == 1)
+            {
+                if (Vector2.Distance(transform.position, player.transform.position) < viewDistance)
+                {
+                    rotationSpeed = lowRotation;
+                }
+                else
+                {
+                    rotationSpeed = totalRotation;
+                }
             }
         }
     }
@@ -93,6 +107,17 @@ public class Enemy : MonoBehaviour
         var desiredAngle = Mathf.Atan2(shipDirection.y, shipDirection.x) * Mathf.Rad2Deg;
         var rotationShip = rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, desiredAngle + typeRot), rotationShip);
+    }
+
+    public void TakeDamage()
+    {
+        hp--;
+        anim.SetInteger("Hp", hp);
+    }
+
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

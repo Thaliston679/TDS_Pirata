@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
+    Animator anim;
     [SerializeField] float moveSpeed = 1;
     [SerializeField] float rotateSpeed = 30;
     [SerializeField] float reloadTime = 0.5f;
@@ -15,10 +16,18 @@ public class Player : MonoBehaviour
     [SerializeField] Transform[] cannonL;
     [SerializeField] Transform cannonF;
 
+    [SerializeField]int hpMax;
+    int hp;
+
+
     void Start()
     {
-        reload = reloadTime;
+        hp = hpMax;
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        anim.SetInteger("Hp", hp);
+
+        reload = reloadTime;
     }
 
     private void Update()
@@ -28,14 +37,17 @@ public class Player : MonoBehaviour
             reload += Time.deltaTime;
         }
 
-        if(reload >= reloadTime)Attack();
+        if(reload >= reloadTime && hp > 0) Attack();
     }
 
 
     void FixedUpdate()
     {
-        rb.angularVelocity = -Input.GetAxis("Horizontal") * rotateSpeed;
-        rb.velocity = -transform.up * Input.GetAxis("Vertical") * moveSpeed;
+        if(hp > 0)
+        {
+            rb.angularVelocity = -Input.GetAxis("Horizontal") * rotateSpeed;
+            rb.velocity = -transform.up * Input.GetAxis("Vertical") * moveSpeed;
+        }
     }
 
     void Attack()
@@ -65,5 +77,16 @@ public class Player : MonoBehaviour
 
             reload = 0;
         }
+    }
+
+    public void TakeDamage()
+    {
+        hp--;
+        anim.SetInteger("Hp", hp);
+    }
+
+    public void DestroyPlayer()
+    {
+        Destroy(gameObject);
     }
 }

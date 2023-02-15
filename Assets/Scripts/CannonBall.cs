@@ -37,5 +37,14 @@ public class CannonBall : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         DestroyBall();
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.GetComponent<Player>().TakeDamage();
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().TakeDamage();
+        }
     }
 }
