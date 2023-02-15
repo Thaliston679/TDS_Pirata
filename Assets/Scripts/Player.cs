@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]int hpMax;
     int hp;
 
+    public GameObject crew;
+
 
     void Start()
     {
@@ -83,6 +85,11 @@ public class Player : MonoBehaviour
     {
         hp--;
         anim.SetInteger("Hp", hp);
+    }
+
+    public void Shipwreck()
+    {
+        Instantiate(crew, transform.position, Quaternion.identity);
     }
 
     public void DestroyPlayer()

@@ -297,6 +297,7 @@ MonoBehaviour:
   - {fileID: 5779199943537086243}
   cannonF: {fileID: 5779199944832917329}
   hpMax: 10
+  crew: {fileID: 4766524998148718819, guid: fe393e65418112345924d8eb02ad77cd, type: 3}
 --- !u!70 &5779199944465867496
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

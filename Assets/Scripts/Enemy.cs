@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
 
     Animator anim;
 
+    public GameObject crew;
+    public GameObject shipExplosion;
 
     void Start()
     {
@@ -120,9 +122,26 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Shipwreck()
+    {
+        Instantiate(crew, transform.position, Quaternion.identity);
+        GameObject shipExp = Instantiate(shipExplosion, transform.position, transform.rotation);
+        Destroy(shipExp, 0.25f);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, viewDistance);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (enemyType == 1 && collision.gameObject.CompareTag("Player"))
+        {
+            hp = 0;
+            anim.SetInteger("Hp", hp);
+            collision.gameObject.GetComponent<Player>().TakeDamage();
+        }
     }
 }
