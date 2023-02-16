@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
-    [SerializeField]GameObject explosion;
+    [SerializeField] GameObject explosion;
 
     public float speed = 5;
 

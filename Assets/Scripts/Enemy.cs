@@ -7,26 +7,28 @@ public class Enemy : MonoBehaviour
 {
     [Tooltip("1 = Chaser / 2 = Shooter")]
     [SerializeField] int enemyType;
+    
+    Rigidbody2D rb;
+    GameObject player;
+    Animator anim;
 
     [SerializeField] float moveSpeed = 1;
     [SerializeField] float rotationSpeed = 1;
+
     float lowRotation;
     float totalRotation;
-    Rigidbody2D rb;
-    GameObject player;
 
     [SerializeField] float reloadTime = 0.75f;
     float reload;
     [SerializeField] GameObject cannonBullet;
     [SerializeField] Transform[] cannonL;
+
     [SerializeField] float viewDistance;
 
     [SerializeField]float hpMax;
     float hp;
     public GameObject healthCanvas;
     public Image healthBar;
-
-    Animator anim;
 
     public GameObject crew;
     public GameObject shipExplosion;
@@ -136,8 +138,10 @@ public class Enemy : MonoBehaviour
     {
         Instantiate(crew, transform.position, Quaternion.identity);
         Destroy(healthCanvas);
+
         GameObject shipExp = Instantiate(shipExplosion, transform.position, transform.rotation);
         Destroy(shipExp, 0.25f);
+
         if (!chaserAtk) GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().AddEnemyDefeated();
     }
 
@@ -164,7 +168,7 @@ public class Enemy : MonoBehaviour
         {
             healthCanvas.transform.position = transform.position + new Vector3(0, 0.8f, 0);
             healthCanvas.transform.LookAt(Camera.main.transform);
-            healthCanvas.transform.Rotate(0, 0, 0);
+            healthCanvas.transform.Rotate(0, 180, 0);
         }
     }
 }

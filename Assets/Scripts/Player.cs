@@ -7,11 +7,12 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
     Animator anim;
+
     [SerializeField] float moveSpeed = 1;
     [SerializeField] float rotateSpeed = 30;
+
     [SerializeField] float reloadTime = 0.5f;
     float reload;
-
     [SerializeField] GameObject cannonBullet;
     [SerializeField] Transform[] cannonR;
     [SerializeField] Transform[] cannonL;
@@ -24,14 +25,12 @@ public class Player : MonoBehaviour
 
     public GameObject crew;
 
-
     void Start()
     {
         hp = hpMax;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         anim.SetInteger("Hp", (int)hp);
-
         reload = reloadTime;
     }
 
@@ -114,7 +113,7 @@ public class Player : MonoBehaviour
         {
             healthCanvas.transform.position = transform.position + new Vector3(0, 0.8f, 0);
             healthCanvas.transform.LookAt(Camera.main.transform);
-            healthCanvas.transform.Rotate(0, 0, 0);
+            healthCanvas.transform.Rotate(0, 180, 0);
         }
     }
 }

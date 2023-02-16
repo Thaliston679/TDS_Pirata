@@ -10,31 +10,31 @@ public class GameController : MonoBehaviour
 {
     GameObject player;
     [SerializeField] GameObject playerPrefab;
-    public GameObject[] enemyPrefab;
 
-    public CameraFollow cam;
+    [SerializeField] GameObject[] enemyPrefab;
 
-    public float spawnRadius = 10f;
+    [SerializeField] CameraFollow cam;
+    [SerializeField] LayerMask whatIsObstacles;
+
+    [SerializeField] float spawnRadius = 10f;
     [SerializeField] private float timeUntilNextSpawn = 5f;
     private float timerUntilNextSpawn = 5f;
 
     [SerializeField] private float matchDuration = 60f;
     private float matchTimer = 0;
-    private float elapsedTime = 0;
 
-    public LayerMask whatIsObstacles;
+    private float elapsedTime = 0;
+    float defeatedEnemies;
+
+    [SerializeField] GameObject panelEndGame;
 
     [SerializeField] Scrollbar scrollTimeEnemy;
     [SerializeField] Scrollbar scrollTimeMatch;
 
-    public GameObject panelEndGame;
-    public TextMeshProUGUI defeatedEnemiesTxt;
-    public TextMeshProUGUI matchTimeElapsedTxt;
-
-    float defeatedEnemies;
+    [SerializeField] TextMeshProUGUI defeatedEnemiesTxt;
+    [SerializeField] TextMeshProUGUI matchTimeElapsedTxt;
 
     bool inGame;
-
     public TextMeshProUGUI inGameTxt;
 
     private void Update()
@@ -75,13 +75,11 @@ public class GameController : MonoBehaviour
         if (timerUntilNextSpawn <= 0)
         {
             Vector2 randomPos = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius + (Vector2)player.transform.position;
-
-            // Verifica se há colisões na área de spawn
+            
             if (Physics2D.OverlapCircle(randomPos, 3, whatIsObstacles) == null)
             {
                 GameObject enemy = Instantiate(enemyPrefab[UnityEngine.Random.Range(0, enemyPrefab.Length)], randomPos, Quaternion.identity);
-                //Virar inimigo na direcao do player
-
+                            
                 Vector3 direction = player.transform.position - enemy.transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 enemy.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
@@ -99,8 +97,6 @@ public class GameController : MonoBehaviour
 
     public void ConfigValues()
     {
-        Debug.Log(scrollTimeEnemy.value);
-        Debug.Log(scrollTimeMatch.value);
 
         switch (scrollTimeEnemy.value)
         {
@@ -135,7 +131,7 @@ public class GameController : MonoBehaviour
 
         DestroyEnemiesAndPlayer();
 
-        Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        Instantiate(playerPrefab, Vector3.zero, playerPrefab.transform.rotation);
 
         FindPlayer();
 
@@ -153,7 +149,7 @@ public class GameController : MonoBehaviour
 
         matchTimer = matchDuration;
 
-        Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        Instantiate(playerPrefab, Vector3.zero, playerPrefab.transform.rotation);
 
         FindPlayer();
 
@@ -173,8 +169,6 @@ public class GameController : MonoBehaviour
 
     public void EndGame()
     {
-        Debug.Log("EndGame;");
-
         DestroyEnemiesAndPlayer();
 
         panelEndGame.SetActive(true);
@@ -218,5 +212,10 @@ public class GameController : MonoBehaviour
         string formattedElapsedTIme = timeSpan.ToString("mm\\:ss");
 
         inGameTxt.text = $"Tempo de jogo: {formattedElapsedTIme}\nInimigos derrotados: {defeatedEnemies}";
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
