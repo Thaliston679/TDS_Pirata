@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f33ff09dbdb974d917943d3eff337e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 1.5
   rotateSpeed: 30
   reloadTime: 0.5
   cannonBullet: {fileID: 2877498712539142043, guid: 76b02f5d1fb54394db52f0a131606f15, type: 3}
