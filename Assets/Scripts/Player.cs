@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
         }
 
         if(reload >= reloadTime && hp > 0) Attack();
+
+        if (hp <= 0) GetComponent<TrailRenderer>().enabled = false;
     }
 
 
@@ -48,7 +50,7 @@ public class Player : MonoBehaviour
         if(hp > 0)
         {
             rb.angularVelocity = -Input.GetAxis("Horizontal") * rotateSpeed;
-            rb.velocity = -transform.up * Input.GetAxis("Vertical") * moveSpeed;
+            rb.velocity = -transform.up * Mathf.Abs(Input.GetAxis("Vertical")) * moveSpeed;
         }
     }
 

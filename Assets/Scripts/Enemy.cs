@@ -28,6 +28,8 @@ public class Enemy : MonoBehaviour
     public GameObject crew;
     public GameObject shipExplosion;
 
+    bool chaserAtk = false;
+
     void Start()
     {
         hp = hpMax;
@@ -89,6 +91,8 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
+        if (hp <= 0) GetComponent<TrailRenderer>().enabled = false;
     }
 
     void Shoot()
@@ -120,6 +124,7 @@ public class Enemy : MonoBehaviour
     public void DestroyEnemy()
     {
         Destroy(gameObject);
+        if(!chaserAtk) GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().AddEnemyDefeated();
     }
 
     public void Shipwreck()
@@ -139,6 +144,7 @@ public class Enemy : MonoBehaviour
     {
         if (enemyType == 1 && collision.gameObject.CompareTag("Player"))
         {
+            chaserAtk = true;
             hp = 0;
             anim.SetInteger("Hp", hp);
             collision.gameObject.GetComponent<Player>().TakeDamage();
