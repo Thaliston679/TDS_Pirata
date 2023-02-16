@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
 
     bool inGame;
 
+    public TextMeshProUGUI inGameTxt;
+
     private void Update()
     {
         if (player != null && inGame)
@@ -142,6 +144,8 @@ public class GameController : MonoBehaviour
 
     public void PlayAgain()
     {
+        Camera.main.orthographicSize = 5;
+
         DestroyEnemiesAndPlayer();
 
         elapsedTime = 0;
@@ -208,4 +212,11 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    private void LateUpdate()
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
+        string formattedElapsedTIme = timeSpan.ToString("mm\\:ss");
+
+        inGameTxt.text = $"Tempo de jogo: {formattedElapsedTIme}\nInimigos derrotados: {defeatedEnemies}";
+    }
 }

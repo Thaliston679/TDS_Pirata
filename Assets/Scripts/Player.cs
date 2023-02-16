@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
         if(reload >= reloadTime && hp > 0) Attack();
 
         if (hp <= 0) GetComponent<TrailRenderer>().enabled = false;
+
+        if (hp <= 0) Camera.main.orthographicSize += Time.deltaTime;
     }
 
 

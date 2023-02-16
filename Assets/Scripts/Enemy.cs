@@ -130,7 +130,6 @@ public class Enemy : MonoBehaviour
     public void DestroyEnemy()
     {
         Destroy(gameObject);
-        if(!chaserAtk) GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().AddEnemyDefeated();
     }
 
     public void Shipwreck()
@@ -139,6 +138,7 @@ public class Enemy : MonoBehaviour
         Destroy(healthCanvas);
         GameObject shipExp = Instantiate(shipExplosion, transform.position, transform.rotation);
         Destroy(shipExp, 0.25f);
+        if (!chaserAtk) GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().AddEnemyDefeated();
     }
 
     private void OnDrawGizmos()
