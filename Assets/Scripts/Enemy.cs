@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -20,8 +21,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] Transform[] cannonL;
     [SerializeField] float viewDistance;
 
-    [SerializeField]int hpMax;
-    int hp;
+    [SerializeField]float hpMax;
+    float hp;
+    public GameObject healthCanvas;
+    public Image healthBar;
 
     Animator anim;
 
@@ -36,7 +39,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         anim = GetComponent<Animator>();
-        anim.SetInteger("Hp", hp);
+        anim.SetInteger("Hp", (int)hp);
 
         reload = reloadTime;
 
@@ -118,7 +121,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage()
     {
         hp--;
-        anim.SetInteger("Hp", hp);
+        anim.SetInteger("Hp", (int)hp);
+
+        float barValue = 1 / (hpMax / hp);
+        healthBar.fillAmount = barValue;
     }
 
     public void DestroyEnemy()
@@ -130,6 +136,7 @@ public class Enemy : MonoBehaviour
     public void Shipwreck()
     {
         Instantiate(crew, transform.position, Quaternion.identity);
+        Destroy(healthCanvas);
         GameObject shipExp = Instantiate(shipExplosion, transform.position, transform.rotation);
         Destroy(shipExp, 0.25f);
     }
@@ -146,8 +153,18 @@ public class Enemy : MonoBehaviour
         {
             chaserAtk = true;
             hp = 0;
-            anim.SetInteger("Hp", hp);
+            anim.SetInteger("Hp", (int)hp);
             collision.gameObject.GetComponent<Player>().TakeDamage();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if(healthCanvas != null)
+        {
+            healthCanvas.transform.position = transform.position + new Vector3(0, 0.8f, 0);
+            healthCanvas.transform.LookAt(Camera.main.transform);
+            healthCanvas.transform.Rotate(0, 0, 0);
         }
     }
 }

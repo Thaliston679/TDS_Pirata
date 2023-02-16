@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,8 +17,10 @@ public class Player : MonoBehaviour
     [SerializeField] Transform[] cannonL;
     [SerializeField] Transform cannonF;
 
-    [SerializeField]int hpMax;
-    int hp;
+    [SerializeField]float hpMax;
+    float hp;
+    public GameObject healthCanvas;
+    public Image healthBar;
 
     public GameObject crew;
 
@@ -27,7 +30,7 @@ public class Player : MonoBehaviour
         hp = hpMax;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        anim.SetInteger("Hp", hp);
+        anim.SetInteger("Hp", (int)hp);
 
         reload = reloadTime;
     }
@@ -86,16 +89,30 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         hp--;
-        anim.SetInteger("Hp", hp);
+        anim.SetInteger("Hp", (int)hp);
+
+        float barValue = 1 / (hpMax / hp);
+        healthBar.fillAmount = barValue;
     }
 
     public void Shipwreck()
     {
         Instantiate(crew, transform.position, Quaternion.identity);
+        Destroy(healthCanvas);
     }
 
     public void DestroyPlayer()
     {
         Destroy(gameObject);
+    }
+
+    private void LateUpdate()
+    {
+        if (healthCanvas != null)
+        {
+            healthCanvas.transform.position = transform.position + new Vector3(0, 0.8f, 0);
+            healthCanvas.transform.LookAt(Camera.main.transform);
+            healthCanvas.transform.Rotate(0, 0, 0);
+        }
     }
 }
