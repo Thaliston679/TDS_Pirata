@@ -37,6 +37,37 @@ public class GameController : MonoBehaviour
     bool inGame;
     public TextMeshProUGUI inGameTxt;
 
+    private LanguageManager lang;
+    [SerializeField] private string[] param;
+    [SerializeField] private string[] paramT;
+
+    private void Start()
+    {
+        lang = LanguageManager.instance;
+        LanguageManager.OnLanguageChange += OnLanguageChange;
+        UpdateText();
+    }
+    private void OnDestroy()
+    {
+        LanguageManager.OnLanguageChange -= OnLanguageChange;
+    }
+
+    void OnLanguageChange()
+    {
+        if (lang != null && lang.langReader != null)
+        {
+            UpdateText();
+        }
+    }
+
+    void UpdateText()
+    {
+        for (int i = 0; i < param.Length; i++)
+        {
+            paramT[i] = lang.langReader.getString(param[i]);
+        }
+    }
+
     private void Update()
     {
         if (player != null && inGame)
@@ -173,12 +204,12 @@ public class GameController : MonoBehaviour
 
         panelEndGame.SetActive(true);
 
-        defeatedEnemiesTxt.text = $"Inimigos derrotados\n{defeatedEnemies}";
+        defeatedEnemiesTxt.text = $"{paramT[0]}\n{defeatedEnemies}";
 
         TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
         string formattedElapsedTIme = timeSpan.ToString("mm\\:ss");
 
-        matchTimeElapsedTxt.text = $"Tempo de partida\n{formattedElapsedTIme}";
+        matchTimeElapsedTxt.text = $"{paramT[1]}\n{formattedElapsedTIme}";
     }
 
     public void DestroyEnemiesAndPlayer()
@@ -211,7 +242,7 @@ public class GameController : MonoBehaviour
         TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
         string formattedElapsedTIme = timeSpan.ToString("mm\\:ss");
 
-        inGameTxt.text = $"Tempo de jogo: {formattedElapsedTIme}\nInimigos derrotados: {defeatedEnemies}";
+        inGameTxt.text = $"{paramT[1]}: {formattedElapsedTIme}\n{paramT[0]}: {defeatedEnemies}";
     }
 
     public void ExitGame()

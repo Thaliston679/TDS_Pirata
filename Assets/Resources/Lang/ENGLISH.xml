@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+	
+	<English>
+		
+		
+		<!-- _ControlEmptyVar_ -->
+		<string name=""></string>
+
+		<!-- Menu -->
+		<string name="0">Fuga Pirata</string>
+		<string name="1">Play</string>
+		<string name="2">Settings</string>
+
+		<!-- InGame -->
+		<string name="3">Defeated enemies</string>
+		<string name="4">Game time</string>
+
+		<!-- Menu_Game_Over -->
+		<string name="5">- Game Over -</string>
+		<string name="6">Play Again</string>
+		<string name="7">Main Menu</string>
+
+		<!-- Menu_Settings -->
+		<string name="8">Game duration time</string>
+		<string name="9">Enemy spawn time</string>
+		
+		
+	</English>
+	
+</languages>

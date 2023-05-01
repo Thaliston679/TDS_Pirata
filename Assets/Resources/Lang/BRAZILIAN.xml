@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+	
+	<Brazilian>
+		
+		
+		<!-- _ControlEmptyVar_ -->
+		<string name=""></string>
+
+		<!-- Menu -->
+		<string name="0">Fuga Pirata</string>
+		<string name="1">Jogar</string>
+		<string name="2">Configurações</string>
+
+		<!-- InGame -->
+		<string name="3">Inimigos derrotados</string>
+		<string name="4">Tempo de jogo</string>
+
+		<!-- Menu_Game_Over -->
+		<string name="5">- Fim de Jogo -</string>
+		<string name="6">Jogar Novamente</string>
+		<string name="7">Menu Principal</string>
+
+		<!-- Menu_Settings -->
+		<string name="8">Tempo de duração da partida</string>
+		<string name="9">Tempo de spawn dos inimigos</string>
+		
+		
+	</Brazilian>
+	
+</languages>
